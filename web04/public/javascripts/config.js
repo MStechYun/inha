@@ -6,11 +6,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/fireba
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "",
-  authDomain: "inha-84789.firebaseapp.com",
-  projectId: "inha-84789",
-  storageBucket: "inha-84789.appspot.com",
-  messagingSenderId: "27456861863",
-  appId: "1:27456861863:web:8cbb2bdd788624db94cd82"
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 // Initialize Firebase
