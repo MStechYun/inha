@@ -1,0 +1,63 @@
+<div class="my-5">
+    <h1 class="text-center mb-5"><%=title%></h1>
+    <div class="text-end">
+        <button id="write" class="btn btn-primary px-5">글쓰기</button>
+        <div id="div_bbs"></div>
+    </div>
+</div>
+<script id="temp_bbs" type="x-handlebars-template">
+    <table class="table table-hover table-striped">
+        <tr>
+            <td>No.</td><td>Title</td><td>Email</td><td>Date</td>
+        </tr>
+        {{#each .}}
+        <tr>
+            <td>{{no}}</td>
+            <td>{{title}}</td>
+            <td>{{email}}</td>
+            <td>{{date}}</td>
+        </tr>
+        {{/each}}
+    </table>
+</script>
+<script type="module">
+    import {app} from '/javascripts/config.js'
+    import {getFirestore, collection, addDoc }  from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import {onSnapshot, where, orderBy, query}  from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    const db = getFirestore(app);
+
+    $("#write").on("click", function(){
+        if(uid){
+            location.href="/bbs/insert";
+        }else{
+            sessionStorage.setItem("target", window.location.href);
+            location.href="/users/login";
+        }
+    });
+    
+    //게시글목록
+    const q = query(collection(db, "bbs"), orderBy("date", "desc"));
+    const rows = []
+    onSnapshot(q, snapshot=> {
+        let no = 1;
+        snapshot.forEach(row=> {
+            rows.push({no:no++, id: row.id, ...row.data()});
+        });
+        console.log(rows);
+        const temp=Handlebars.compile($("#temp_bbs").html());
+        $("#div_bbs").html(temp(rows))
+        getList();
+    });
+
+    //글쓰기 버튼을 클릭한 경우
+    $("#writer").on("click", function(){
+        if(email){
+            location.href="/bbs/insert";
+        }else{
+            sessionStorage.setItem("target", "bbs/insert");
+            location.href="/users/login";
+        }
+    })
+
+    
+</script>
